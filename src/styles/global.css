@@ -1,0 +1,156 @@
+:root {
+  --color-bg: #f5f6f8;
+  --color-surface: #ffffff;
+  --color-surface-2: #eef0f4;
+  --color-border: #d9dde5;
+  --color-text: #1f2430;
+  --color-text-muted: #4a5265;
+  --color-text-subtle: #8b93a5;
+  --color-accent: #2f6fed;
+  --color-accent-soft: #e8f0ff;
+  --color-danger: #d64545;
+  --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans SC', Roboto, sans-serif;
+  --font-mono: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--color-text);
+  background: var(--color-bg);
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+/* Three-column workspace: palette+editor on the left, flow and YAML previews on the right. */
+.workspace {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  min-height: 0;
+  background: var(--color-bg);
+  color: var(--color-text);
+}
+
+.workspace__toolbar {
+  flex: 0 0 auto;
+  border-bottom: 1px solid var(--color-border);
+  background: var(--color-surface);
+}
+
+.workspace__body {
+  display: grid;
+  grid-template-columns: minmax(360px, 42%) 1fr;
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+.workspace__editor-column {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  border-right: 1px solid var(--color-border);
+  background: var(--color-surface);
+}
+
+.workspace__palette {
+  display: flex;
+  flex-direction: column;
+  flex: 0 0 auto;
+  max-height: 34%;
+  overflow: hidden;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.workspace__editor {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  overflow: auto;
+  min-height: 0;
+}
+
+.workspace__preview-column {
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) minmax(0, 1fr);
+  min-width: 0;
+  min-height: 0;
+}
+
+.workspace__flow {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+  border-bottom: 1px solid var(--color-border);
+  background: var(--color-bg);
+}
+
+.workspace__yaml {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+  background: var(--color-surface);
+}
+
+/* Shared panel heading used across editor and preview panes. */
+.panel-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 16px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--color-text-muted);
+  border-bottom: 1px solid var(--color-border);
+  background: var(--color-surface-2);
+}
+
+.panel-heading__title {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.panel-heading__en {
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--color-text-subtle);
+}
+
+.placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1 1 auto;
+  padding: 24px;
+  text-align: center;
+  color: var(--color-text-subtle);
+  font-size: 13px;
+}
