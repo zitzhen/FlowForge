@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import type { Strategy, YamlRecord } from '../../../domain/types';
 import { LABELS, labelText } from '../../../i18n/labels';
+import { parseValue, toValueText } from '../../../yaml/valueText';
 
 interface StrategyEditorProps {
   strategy?: Strategy;
@@ -11,7 +12,7 @@ interface StrategyEditorProps {
 function matrixToText(matrix?: YamlRecord): string {
   if (!matrix) return '';
   return Object.entries(matrix)
-    .map(([key, values]) => `${key}=${Array.isArray(values) ? values.join(',') : String(values)}`)
+    .map(([key, values]) => `${key}=${toValueText(values)}`)
     .join('\n');
 }
 
@@ -25,11 +26,7 @@ function textToMatrix(text: string): YamlRecord {
     const key = trimmed.slice(0, eq).trim();
     const raw = trimmed.slice(eq + 1).trim();
     if (!key) continue;
-    const parts = raw
-      .split(',')
-      .map((p) => p.trim())
-      .filter(Boolean);
-    result[key] = parts.length > 1 ? parts : raw;
+    result[key] = parseValue(raw);
   }
   return result;
 }
@@ -60,7 +57,7 @@ export function StrategyEditor({ strategy, onChange }: StrategyEditorProps) {
               value={matrixText}
               onChange={(e) => setMatrixText(e.target.value)}
               onBlur={commitMatrix}
-              placeholder="node=18,20,22"
+              placeholder="node=[18,20,22]"
             />
           </label>
           <label className="field-inline">

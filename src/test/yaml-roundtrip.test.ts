@@ -67,3 +67,21 @@ describe('editing known fields', () => {
     expect(output).toContain('# This comment must survive a round-trip.');
   });
 });
+
+describe('typed map values', () => {
+  it('round-trips mixed scalar and collection types through the value text codec', async () => {
+    const { parseValue, toValueText } = await import('../yaml/valueText');
+    const values = [3, true, false, null, 'main', [18, 20, 22], { cache: true }];
+    for (const value of values) {
+      expect(parseValue(toValueText(value as never))).toEqual(value);
+    }
+  });
+
+  it('projects typed with/env values from an imported document', () => {
+    const source =
+      'jobs:\n  build:\n    runs-on: ubuntu-latest\n    env:\n      RETRIES: 3\n      DEBUG: true\n    steps:\n      - uses: actions/setup-node@v4\n        with:\n          node: [18, 20, 22]';
+    const model = mapToModel(importYaml(source).doc);
+    expect(model.jobs[0]?.env).toEqual({ RETRIES: 3, DEBUG: true });
+    expect(model.jobs[0]?.steps[0]?.with).toEqual({ node: [18, 20, 22] });
+  });
+});

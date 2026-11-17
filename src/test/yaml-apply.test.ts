@@ -103,4 +103,25 @@ describe('applyModel editing commands', () => {
     expect(out.customTop ?? out['custom-top']).toBe('keep');
     expect(out.jobs.build.steps[0].with.custom).toBe('value');
   });
+
+  it('writes typed values (number/boolean/null/array/object) into with and env', () => {
+    const { doc } = importYaml(
+      'jobs:\n  build:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/setup-node@v4',
+    );
+    setStepField(doc, 'build', 0, 'with', {
+      retries: 3,
+      debug: true,
+      token: null,
+      node: [18, 20, 22],
+      opts: { cache: true },
+      label: 'main',
+    });
+    const withValues = parseOut(doc).jobs.build.steps[0].with;
+    expect(withValues.retries).toBe(3);
+    expect(withValues.debug).toBe(true);
+    expect(withValues.token).toBeNull();
+    expect(withValues.node).toEqual([18, 20, 22]);
+    expect(withValues.opts).toEqual({ cache: true });
+    expect(withValues.label).toBe('main');
+  });
 });
