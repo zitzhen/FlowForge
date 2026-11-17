@@ -42,6 +42,11 @@ export interface WorkflowState {
   /** Transient user-facing notice (e.g. duplicate trigger). */
   notice: string | null;
   setNotice: (notice: string | null) => void;
+  /** Undo/redo snapshots of the document (bounded by HISTORY_LIMIT). */
+  past: Document[];
+  future: Document[];
+  undo: () => void;
+  redo: () => void;
 
   // Workflow-level actions
   setName: (name: string) => void;
@@ -73,13 +78,17 @@ export interface WorkflowState {
 }
 
 const initial = importYaml('name: CI Workflow\non:\n  push:\n    branches: [main]\njobs: {}');
+const HISTORY_LIMIT = 50;
 
-/** Apply a mutation to the document, then re-project the model and YAML text. */
+/** Apply a mutation, snapshot the pre-edit doc for undo, then re-project. */
 function commit(state: WorkflowState, mutate: (doc: Document) => void): Partial<WorkflowState> {
+  const snapshot = state.doc.clone();
   mutate(state.doc);
   return {
     model: mapToModel(state.doc),
     yamlText: exportYaml(state.doc),
+    past: [...state.past, snapshot].slice(-HISTORY_LIMIT),
+    future: [],
   };
 }
 
@@ -91,6 +100,34 @@ export const useWorkflowStore = create<WorkflowState>((set) => ({
   warnings: initial.warnings,
   notice: null,
   setNotice: (notice) => set({ notice }),
+  past: [],
+  future: [],
+
+  undo: () =>
+    set((state) => {
+      const previous = state.past[state.past.length - 1];
+      if (!previous) return {};
+      return {
+        doc: previous,
+        model: mapToModel(previous),
+        yamlText: exportYaml(previous),
+        past: state.past.slice(0, -1),
+        future: [state.doc.clone(), ...state.future].slice(0, HISTORY_LIMIT),
+      };
+    }),
+
+  redo: () =>
+    set((state) => {
+      const next = state.future[0];
+      if (!next) return {};
+      return {
+        doc: next,
+        model: mapToModel(next),
+        yamlText: exportYaml(next),
+        past: [...state.past, state.doc.clone()].slice(-HISTORY_LIMIT),
+        future: state.future.slice(1),
+      };
+    }),
 
   setName: (name) => set((state) => commit(state, (doc) => setNameCmd(doc, name))),
 
@@ -103,6 +140,8 @@ export const useWorkflowStore = create<WorkflowState>((set) => ({
         yamlText: exportYaml(state.doc),
         errors: [],
         warnings: [],
+        past: [],
+        future: [],
       };
     }),
 
@@ -114,16 +153,19 @@ export const useWorkflowStore = create<WorkflowState>((set) => ({
       yamlText: exportYaml(result.doc),
       errors: result.errors,
       warnings: result.warnings,
+      past: [],
+      future: [],
     });
     return result;
   },
 
   addTrigger: (event, config) => {
     let added = false;
-    set((state) => {
-      added = addTriggerCmd(state.doc, event, config);
-      return commit(state, () => {});
-    });
+    set((state) =>
+      commit(state, (doc) => {
+        added = addTriggerCmd(doc, event, config);
+      }),
+    );
     return added;
   },
   updateTrigger: (event, config) =>

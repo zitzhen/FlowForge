@@ -45,6 +45,8 @@ export const LABELS = {
   paths: { zh: '路径', en: 'Paths' },
   cron: { zh: '定时表达式', en: 'Cron' },
   noTriggerConfig: { zh: '该触发器无需额外配置', en: 'No extra configuration' },
+  undo: { zh: '撤销', en: 'Undo' },
+  redo: { zh: '重做', en: 'Redo' },
 } satisfies Record<string, BilingualLabel>;
 
 export type LabelKey = keyof typeof LABELS;
