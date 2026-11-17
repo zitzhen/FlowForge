@@ -42,7 +42,9 @@ npm install
 npm run dev
 ```
 
-Open the URL printed by Vite (by default <http://localhost:5173>).
+Open the URL printed by Vite (by default <http://localhost:5173>). The landing page is the default
+entry; click **免费开始搭建** or open `#/workspace` to enter the editor, and use **← 首页** in the
+workspace toolbar to return.
 
 ## Scripts
 

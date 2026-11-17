@@ -20,7 +20,7 @@
 html,
 body,
 #root {
-  height: 100%;
+  min-height: 100%;
   margin: 0;
 }
 
@@ -29,6 +29,22 @@ body {
   font-size: 14px;
   line-height: 1.5;
   color: var(--color-text);
+  background: var(--color-bg);
+}
+
+body[data-page="home"] {
+  background: #080b11;
+}
+
+.app {
+  min-height: 100vh;
+}
+
+.app--home {
+  background: #080b11;
+}
+
+.app--workspace {
   background: var(--color-bg);
 }
 
@@ -620,8 +636,19 @@ button {
 }
 .toolbar__brand {
   display: flex;
-  align-items: baseline;
+  align-items: center;
   gap: 10px;
+}
+.toolbar__home {
+  padding: 3px 6px;
+  border-radius: 4px;
+  color: var(--color-text-muted);
+  font-size: 12px;
+  text-decoration: none;
+}
+.toolbar__home:hover {
+  background: var(--color-surface-2);
+  color: var(--color-accent);
 }
 .toolbar__logo {
   font-size: 17px;
