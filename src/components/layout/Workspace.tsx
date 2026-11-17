@@ -1,3 +1,7 @@
+import { EditorDndContext } from '../editor/EditorDndContext';
+import { WorkflowEditor } from '../editor/WorkflowEditor';
+import { BlockPalette } from '../palette/BlockPalette';
+
 export function Workspace() {
   return (
     <div className="workspace">
@@ -10,24 +14,26 @@ export function Workspace() {
       </header>
 
       <div className="workspace__body">
-        <section className="workspace__editor-column">
-          <div className="workspace__palette">
-            <div className="panel-heading">
-              <span className="panel-heading__title">
-                积木 <span className="panel-heading__en">Blocks</span>
-              </span>
+        <EditorDndContext>
+          <section className="workspace__editor-column">
+            <div className="workspace__palette">
+              <div className="panel-heading">
+                <span className="panel-heading__title">
+                  积木 <span className="panel-heading__en">Blocks</span>
+                </span>
+              </div>
+              <BlockPalette />
             </div>
-            <div className="placeholder">Block palette will render here</div>
-          </div>
-          <div className="workspace__editor">
-            <div className="panel-heading">
-              <span className="panel-heading__title">
-                编排 <span className="panel-heading__en">Editor</span>
-              </span>
+            <div className="workspace__editor">
+              <div className="panel-heading">
+                <span className="panel-heading__title">
+                  编排 <span className="panel-heading__en">Editor</span>
+                </span>
+              </div>
+              <WorkflowEditor />
             </div>
-            <div className="placeholder">Workflow editor will render here</div>
-          </div>
-        </section>
+          </section>
+        </EditorDndContext>
 
         <section className="workspace__preview-column">
           <div className="workspace__flow">
