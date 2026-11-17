@@ -46,15 +46,15 @@ Open the URL printed by Vite (by default <http://localhost:5173>).
 
 ## Scripts
 
-| Command | Description |
-| --- | --- |
-| `npm run dev` | Start the development server. |
-| `npm run build` | Type-check and build the production site into `dist/`. |
-| `npm run preview` | Preview the production build locally. |
-| `npm run test` | Run the test suite once. |
-| `npm run test:watch` | Run tests in watch mode. |
-| `npm run lint` | Check formatting and lint rules. |
-| `npm run lint:fix` | Apply safe formatting and lint fixes. |
+| Command              | Description                                            |
+| -------------------- | ------------------------------------------------------ |
+| `npm run dev`        | Start the development server.                          |
+| `npm run build`      | Type-check and build the production site into `dist/`. |
+| `npm run preview`    | Preview the production build locally.                  |
+| `npm run test`       | Run the test suite once.                               |
+| `npm run test:watch` | Run tests in watch mode.                               |
+| `npm run lint`       | Check formatting and lint rules.                       |
+| `npm run lint:fix`   | Apply safe formatting and lint fixes.                  |
 
 ## Deployment to Cloudflare Pages
 
@@ -72,7 +72,6 @@ served from any path.
    dashboard, or `wrangler pages deploy dist --project-name <your-project>`).
 
 3. Configure the build settings if you prefer Cloudflare to build from source:
-
    - Build command: `npm run build`
    - Build output directory: `dist`
    - Node.js version: 22
