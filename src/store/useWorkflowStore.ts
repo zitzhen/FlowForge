@@ -39,6 +39,9 @@ export interface WorkflowState {
   errors: string[];
   /** Parse warnings from the last import. */
   warnings: string[];
+  /** Transient user-facing notice (e.g. duplicate trigger). */
+  notice: string | null;
+  setNotice: (notice: string | null) => void;
 
   // Workflow-level actions
   setName: (name: string) => void;
@@ -46,7 +49,7 @@ export interface WorkflowState {
   importYaml: (text: string) => ImportResult;
 
   // Trigger actions
-  addTrigger: (event: string, config: YamlRecord) => void;
+  addTrigger: (event: string, config: YamlRecord) => boolean;
   updateTrigger: (event: string, config: YamlRecord) => void;
   removeTrigger: (event: string) => void;
 
@@ -86,6 +89,8 @@ export const useWorkflowStore = create<WorkflowState>((set) => ({
   yamlText: exportYaml(initial.doc),
   errors: initial.errors,
   warnings: initial.warnings,
+  notice: null,
+  setNotice: (notice) => set({ notice }),
 
   setName: (name) => set((state) => commit(state, (doc) => setNameCmd(doc, name))),
 
@@ -113,8 +118,14 @@ export const useWorkflowStore = create<WorkflowState>((set) => ({
     return result;
   },
 
-  addTrigger: (event, config) =>
-    set((state) => commit(state, (doc) => addTriggerCmd(doc, event, config))),
+  addTrigger: (event, config) => {
+    let added = false;
+    set((state) => {
+      added = addTriggerCmd(state.doc, event, config);
+      return commit(state, () => {});
+    });
+    return added;
+  },
   updateTrigger: (event, config) =>
     set((state) => commit(state, (doc) => updateTriggerCmd(doc, event, config))),
   removeTrigger: (event) => set((state) => commit(state, (doc) => removeTriggerCmd(doc, event))),

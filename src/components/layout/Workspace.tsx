@@ -1,3 +1,5 @@
+import { useEffect } from 'react';
+import { useWorkflowStore } from '../../store/useWorkflowStore';
 import { EditorDndContext } from '../editor/EditorDndContext';
 import { WorkflowEditor } from '../editor/WorkflowEditor';
 import { BlockPalette } from '../palette/BlockPalette';
@@ -5,12 +7,31 @@ import { FlowPreview } from '../preview/FlowPreview';
 import { YamlPreview } from '../preview/YamlPreview';
 import { Toolbar } from '../toolbar/Toolbar';
 
+function Notice() {
+  const notice = useWorkflowStore((s) => s.notice);
+  const setNotice = useWorkflowStore((s) => s.setNotice);
+
+  useEffect(() => {
+    if (!notice) return;
+    const timer = setTimeout(() => setNotice(null), 2500);
+    return () => clearTimeout(timer);
+  }, [notice, setNotice]);
+
+  if (!notice) return null;
+  return (
+    <div className="workspace__notice" role="status">
+      {notice}
+    </div>
+  );
+}
+
 export function Workspace() {
   return (
     <div className="workspace">
       <header className="workspace__toolbar">
         <Toolbar />
       </header>
+      <Notice />
 
       <div className="workspace__body">
         <EditorDndContext>

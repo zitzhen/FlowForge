@@ -63,6 +63,20 @@ describe('store integration', () => {
     });
     expect(useWorkflowStore.getState().model.jobs).toHaveLength(0);
   });
+
+  it('reports duplicate triggers through the notice state', () => {
+    let first = false;
+    let second = false;
+    act(() => {
+      const s = useWorkflowStore.getState();
+      first = s.addTrigger('push', { branches: ['main'] });
+      second = s.addTrigger('push', { branches: ['dev'] });
+      if (!second) useWorkflowStore.getState().setNotice('该触发器已存在 (push)');
+    });
+    expect(first).toBe(true);
+    expect(second).toBe(false);
+    expect(useWorkflowStore.getState().notice).toBe('该触发器已存在 (push)');
+  });
 });
 
 describe('YamlPreview component', () => {

@@ -32,11 +32,19 @@ describe('applyModel editing commands', () => {
 
   it('adds and removes triggers', () => {
     const { doc } = importYaml('jobs: {}');
-    addTrigger(doc, 'push', { branches: ['main'] });
-    addTrigger(doc, 'workflow_dispatch', {});
+    expect(addTrigger(doc, 'push', { branches: ['main'] })).toBe(true);
+    expect(addTrigger(doc, 'workflow_dispatch', {})).toBe(true);
     expect(mapToModel(doc).triggers.map((t) => t.event)).toEqual(['push', 'workflow_dispatch']);
     removeTrigger(doc, 'push');
     expect(mapToModel(doc).triggers.map((t) => t.event)).toEqual(['workflow_dispatch']);
+  });
+
+  it('reports a duplicate trigger without changing the document', () => {
+    const { doc } = importYaml('jobs: {}');
+    addTrigger(doc, 'push', { branches: ['main'] });
+    const before = exportYaml(doc);
+    expect(addTrigger(doc, 'push', { branches: ['dev'] })).toBe(false);
+    expect(exportYaml(doc)).toBe(before);
   });
 
   it('adds jobs with unique ids and updates runs-on', () => {

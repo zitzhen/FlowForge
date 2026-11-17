@@ -63,7 +63,8 @@ export function EditorDndContext({ children }: { children: ReactNode }) {
         return;
       }
       if (block.kind === 'trigger') {
-        store.addTrigger(block.type, block.defaults);
+        const added = store.addTrigger(block.type, block.defaults);
+        if (!added) store.setNotice(`该触发器已存在 (${block.type})`);
         return;
       }
       return;

@@ -27,8 +27,11 @@ function createEmptyJobsMap(doc: Document): void {
   if (!doc.getIn(PATHS.jobs, true)) setKnown(doc, PATHS.jobs, {});
 }
 
-/** Add a trigger event under `on`, writing to a map (or converting a list to a map). */
-export function addTrigger(doc: Document, event: string, config: YamlRecord): void {
+/**
+ * Add a trigger event under `on`, writing to a map (or converting a list to a map).
+ * Returns true when a new event was added, false when it already existed.
+ */
+export function addTrigger(doc: Document, event: string, config: YamlRecord): boolean {
   const existing = doc.getIn(PATHS.on, true);
   let onMap: YAMLMap;
 
@@ -44,10 +47,12 @@ export function addTrigger(doc: Document, event: string, config: YamlRecord): vo
     }
     seed[event] = config;
     setKnown(doc, PATHS.on, seed);
-    return;
+    return true;
   }
 
-  if (!onMap.has(event)) onMap.set(event, doc.createNode(config));
+  if (onMap.has(event)) return false;
+  onMap.set(event, doc.createNode(config));
+  return true;
 }
 
 /** Remove a trigger event. Leaves `on` as an empty map if it was the last one. */
