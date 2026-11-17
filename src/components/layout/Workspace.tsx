@@ -2,16 +2,14 @@ import { EditorDndContext } from '../editor/EditorDndContext';
 import { WorkflowEditor } from '../editor/WorkflowEditor';
 import { BlockPalette } from '../palette/BlockPalette';
 import { FlowPreview } from '../preview/FlowPreview';
+import { YamlPreview } from '../preview/YamlPreview';
+import { Toolbar } from '../toolbar/Toolbar';
 
 export function Workspace() {
   return (
     <div className="workspace">
       <header className="workspace__toolbar">
-        <div className="panel-heading">
-          <span className="panel-heading__title">
-            FlowForge <span className="panel-heading__en">GitHub Actions Visual Editor</span>
-          </span>
-        </div>
+        <Toolbar />
       </header>
 
       <div className="workspace__body">
@@ -51,7 +49,7 @@ export function Workspace() {
                 YAML <span className="panel-heading__en">Preview</span>
               </span>
             </div>
-            <div className="placeholder">YAML preview will render here</div>
+            <YamlPreview />
           </div>
         </section>
       </div>
