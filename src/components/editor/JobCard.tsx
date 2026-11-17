@@ -31,7 +31,15 @@ export function JobCard({
   onStepChange,
   onStepRemove,
 }: JobCardProps) {
-  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+    isOver: isJobOver,
+  } = useSortable({
     id: job.id,
     data: { type: 'job' },
   });
@@ -46,7 +54,12 @@ export function JobCard({
   };
 
   return (
-    <div ref={setNodeRef} style={style} className={`job-card${isOver ? ' job-card--over' : ''}`}>
+    <div
+      ref={setNodeRef}
+      style={style}
+      className={`job-card${isOver ? ' job-card--over' : ''}${isJobOver ? ' job-card--drop' : ''}`}
+    >
+      {isJobOver && <div className="job-card__drop-line" />}
       <div className="job-card__header">
         <button
           type="button"

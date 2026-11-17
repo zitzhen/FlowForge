@@ -313,6 +313,15 @@ button {
   border-color: var(--color-accent);
   box-shadow: 0 0 0 2px var(--color-accent-soft);
 }
+.job-card--drop {
+  border-color: var(--color-accent);
+}
+.job-card__drop-line {
+  height: 3px;
+  background: var(--color-accent);
+  border-radius: 2px;
+  margin-bottom: 4px;
+}
 .job-card__header {
   display: flex;
   align-items: center;

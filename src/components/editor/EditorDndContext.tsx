@@ -13,6 +13,21 @@ export function isPaletteDrag(data: unknown): data is PaletteDragData {
   return !!data && typeof data === 'object' && (data as PaletteDragData).type === 'palette-block';
 }
 
+/** Resolve the job index a palette drop targets; -1 means append at the end. */
+export function resolveJobDropIndex(overId: string, overData: unknown, jobIds: string[]): number {
+  let targetId: string | undefined;
+  if (overData && typeof overData === 'object') {
+    const data = overData as { type?: string; jobId?: string };
+    if (data.type === 'step-drop' && data.jobId) targetId = data.jobId;
+    else if (data.type === 'job') targetId = overId;
+  }
+  if (!targetId) {
+    targetId = overId.startsWith('drop-job:') ? overId.slice('drop-job:'.length) : overId;
+  }
+  const index = jobIds.indexOf(targetId);
+  return index === -1 ? -1 : index;
+}
+
 export function EditorDndContext({ children }: { children: ReactNode }) {
   const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 5 } }));
 
@@ -34,7 +49,17 @@ export function EditorDndContext({ children }: { children: ReactNode }) {
         return;
       }
       if (block.kind === 'job') {
-        store.addJob();
+        const targetIndex = resolveJobDropIndex(
+          overId,
+          over.data.current,
+          model.jobs.map((j) => j.id),
+        );
+        const newId = store.addJob();
+        if (targetIndex !== -1) {
+          const latest = useWorkflowStore.getState().model.jobs.map((j) => j.id);
+          const from = latest.indexOf(newId);
+          if (from !== -1 && from !== targetIndex) store.moveJob(from, targetIndex);
+        }
         return;
       }
       if (block.kind === 'trigger') {
