@@ -1,6 +1,7 @@
 import { EditorDndContext } from '../editor/EditorDndContext';
 import { WorkflowEditor } from '../editor/WorkflowEditor';
 import { BlockPalette } from '../palette/BlockPalette';
+import { FlowPreview } from '../preview/FlowPreview';
 
 export function Workspace() {
   return (
@@ -42,7 +43,7 @@ export function Workspace() {
                 流程图 <span className="panel-heading__en">Workflow Graph</span>
               </span>
             </div>
-            <div className="placeholder">Workflow graph will render here</div>
+            <FlowPreview />
           </div>
           <div className="workspace__yaml">
             <div className="panel-heading">

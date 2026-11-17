@@ -502,3 +502,52 @@ button {
 .btn--icon:hover {
   color: var(--color-danger);
 }
+
+/* ---------- Flow preview ---------- */
+.workspace__flow .react-flow {
+  flex: 1 1 auto;
+  min-height: 0;
+}
+.flow-node {
+  min-width: 180px;
+  max-width: 220px;
+  padding: 10px 12px;
+  border: 1px solid var(--color-accent);
+  border-radius: 8px;
+  background: var(--color-surface);
+  box-shadow: 0 2px 8px rgb(31 36 48 / 0.1);
+  font-size: 12px;
+}
+.flow-node--start {
+  border-color: #2e9e6b;
+  background: #eefaf4;
+}
+.flow-node__title {
+  font-weight: 600;
+  font-family: var(--font-mono);
+  word-break: break-all;
+}
+.flow-node__meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 6px;
+  font-size: 11px;
+  color: var(--color-text-muted);
+}
+.flow-node__badge {
+  padding: 1px 6px;
+  border-radius: 4px;
+  background: var(--color-surface-2);
+  font-family: var(--font-mono);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.flow-node__steps {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 90px;
+}
