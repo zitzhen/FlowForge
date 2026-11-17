@@ -1,5 +1,5 @@
-import { defineConfig } from 'vitest/config';
 import react from '@vitejs/plugin-react';
+import { defineConfig } from 'vitest/config';
 
 // Relative base keeps the built assets portable on Cloudflare Pages,
 // including when the site is served from a nested path.

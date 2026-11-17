@@ -1,0 +1,41 @@
+name: CI Pipeline
+# This comment must survive a round-trip.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: [20, 22]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+      - run: npm ci
+      - run: npm test
+
+  deploy:
+    needs: [build]
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - name: Unknown field is preserved
+        uses: actions/checkout@v4
+        with:
+          custom-input: keep-me
+      - run: echo "deploy"
