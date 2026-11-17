@@ -61,6 +61,12 @@ export function StepRow({ step, index, onChange, onRemove }: StepRowProps) {
           multiline
         />
         <FieldInput labelKey="if" value={step.if ?? ''} onChange={(v) => onChange('if', v)} mono />
+        <FieldInput
+          labelKey="workingDirectory"
+          value={step.workingDirectory ?? ''}
+          onChange={(v) => onChange('working-directory', v)}
+          mono
+        />
         <MapEditor labelKey="with" record={step.with} onChange={(v) => onChange('with', v)} />
         <MapEditor labelKey="env" record={step.env} onChange={(v) => onChange('env', v)} />
       </div>
