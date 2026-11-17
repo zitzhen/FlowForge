@@ -13,6 +13,7 @@ export function WorkflowEditor() {
   const renameJob = useWorkflowStore((s) => s.renameJob);
   const removeJob = useWorkflowStore((s) => s.removeJob);
   const removeTrigger = useWorkflowStore((s) => s.removeTrigger);
+  const updateTrigger = useWorkflowStore((s) => s.updateTrigger);
   const setJobName = useWorkflowStore((s) => s.setJobName);
   const setJobRunsOn = useWorkflowStore((s) => s.setJobRunsOn);
   const setJobIf = useWorkflowStore((s) => s.setJobIf);
@@ -32,7 +33,11 @@ export function WorkflowEditor() {
       </div>
 
       <div className="workflow-editor__section">
-        <TriggerEditor triggers={model.triggers} onRemove={removeTrigger} />
+        <TriggerEditor
+          triggers={model.triggers}
+          onRemove={removeTrigger}
+          onUpdate={updateTrigger}
+        />
       </div>
 
       <div className="workflow-editor__section">

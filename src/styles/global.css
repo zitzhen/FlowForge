@@ -285,6 +285,21 @@ button {
   line-height: 1;
   padding: 0;
 }
+.trigger-pill {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 180px;
+}
+.trigger-chip__toggle {
+  border: none;
+  background: transparent;
+  color: inherit;
+  font-family: inherit;
+  font-size: 12px;
+  padding: 0;
+  cursor: pointer;
+}
 
 /* ---------- Job card ---------- */
 .job-card {

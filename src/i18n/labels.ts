@@ -41,6 +41,10 @@ export const LABELS = {
   dropStepHere: { zh: '拖入步骤', en: 'Drop steps here' },
   dropBlockHere: { zh: '拖入积木到此处', en: 'Drop a block here' },
   workflowName: { zh: 'CI Workflow', en: 'CI Workflow' },
+  branches: { zh: '分支', en: 'Branches' },
+  paths: { zh: '路径', en: 'Paths' },
+  cron: { zh: '定时表达式', en: 'Cron' },
+  noTriggerConfig: { zh: '该触发器无需额外配置', en: 'No extra configuration' },
 } satisfies Record<string, BilingualLabel>;
 
 export type LabelKey = keyof typeof LABELS;
