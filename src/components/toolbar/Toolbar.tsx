@@ -46,6 +46,9 @@ export function Toolbar() {
   return (
     <div className="workspace__toolbar-inner">
       <div className="toolbar__brand">
+        <a className="toolbar__home" href="#/" title="返回首页">
+          ← 首页
+        </a>
         <span className="toolbar__logo">FlowForge</span>
         <span className="toolbar__tagline">GitHub Actions Visual Editor · 可视化编排</span>
       </div>
